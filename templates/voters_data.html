@@ -1,9 +1,24 @@
-<p>Voters:</p>
-<div class="padding-left-4">
-Total = {{ data.str_total_voters() }} <br>
-Urban = {{ data.str_total_voters_urban() }} <br>
-Rural = {{ data.str_total_voters_rural() }} <br>
+
+<div class="col-md-4">
+    <p>Voters:</p>
+    <div class="padding-left-4">
+    <ul class="list-group">
+    <li class="list-group-item">
+        <span class="badge">{{ data.str_total_voters() }}</span>
+        Total
+    </li>
+        <li class="list-group-item">
+        <span class="badge">{{ data.str_total_voters_urban() }}</span>
+        Urban
+    </li>
+        <li class="list-group-item">
+        <span class="badge">{{ data.str_total_voters_rural() }}</span>
+        Rural
+    </li>
+    </ul>
+
+    </div>
+    <p>
+    Presence = <span class="text-bold">{{ data.str_presence() }}</span>
+    </p>
 </div>
-<p>
-Presence = <span class="text-bold">{{ data.str_presence() }}</span>
-</p>

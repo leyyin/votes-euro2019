@@ -1,11 +1,17 @@
-<!DOCTYPE html>
-<html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="refresh" content="30">
-    <title>Votes</title>
+{% extends "bootstrap/base.html" %}
 
-    <style>
+{% import "bootstrap/utils.html" as utils %}
+
+
+{% block title %}Votes 2019 Euro parliment and Referendum{% endblock %}
+
+{# Then, inside the head block, we apply these. To not replace the header,
+   ``super()`` is used: #}
+{% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="refresh" content="{{refresh_seconds}}">
+  {{super()}}
+  <style>
       .padding-left-4 {
         padding-left: 4em;
       }
@@ -13,30 +19,59 @@
       .text-bold {
          font-weight: bold;
       }
+  </style>
+{%- endblock %}
 
-    </style>
-  </head>
-  <body>
+
+{% block content %}
+<div class="container">
+  {%- with messages = get_flashed_messages(with_categories=True) %}
+  {%- if messages %}
+    <div class="row">
+      <div class="col-md-12">
+        {{utils.flashed_messages(messages)}}
+      </div>
+    </div>
+  {%- endif %}
+  {%- endwith %}
+
+  <div class="row">
     <h1>Votes</h1>
-    <p>Max allowed to vote: {{ euro_data.str_max_voters() }}</p>
-    <p>Note the data here is more up to date than what is shown on the BEC website ;)</p>
+
+    <div class="alert alert-info" role="alert">
+      Max people allowed to vote: {{ euro_data.str_max_voters() }}
+    </div>
+    <div class="alert alert-info" role="alert">
+      Note the data here is more up to date than what is shown on the BEC website ;)
+    </div>
+    <div class="alert alert-info" role="alert">
+      Page refreshes every {{refresh_seconds}} seconds!
+    </div>
+  </div>
+
+  <div class="row">
     <hr>
     <h2><a href="{{url_euro}}" target="_blank">Europarlamentare</a></h2>
     {% with data=euro_data %}
     {% include "voters_data.html" %}
     {% endwith %}
+  </div>
 
+  <div class="row">
     <hr>
     <h2><a href="{{url_referendum}}" target="_blank">Referendum</a></h2>
     {% with data=referendum_data %}
     {% include "voters_data.html" %}
     {% endwith %}
+  </div>
 
+  <div class="row">
     <hr>
     <h2>Difference (Europarlamentare - Referendum)</h2>
     {% with data=difference_data %}
     {% include "voters_data.html" %}
     {% endwith %}
+  </div>
 
-  </body>
-</html>
+</div>
+{%- endblock %}
