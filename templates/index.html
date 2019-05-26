@@ -75,6 +75,34 @@
     {% with data=difference_data %}
     {% include "voters_data.html" %}
     {% endwith %}
+
+    <div class="col-md-12">
+    <h4>Voting difference by county (sorted by difference percentage descending):</h4>
+    <table class="table table-bordered table-hover">
+      <tr>
+        <th>County Code</th>
+        <th>County Name</th>
+        <th>Max voters</th>
+        <th>Difference voters Total</th>
+        <th>Difference voters rural</th>
+        <th>Difference voters urban</th>
+        <th>Difference presence</th>
+      </tr>
+
+      {% for county in difference_data.counties_difference %}
+      <tr>
+        <td>{{ county.code }}</td>
+        <td>{{ county.name }}</td>
+        <td>{{ county.max_voters }}</td>
+        <td>{{ county.voters_total }}</td>
+        <td>{{ county.voters_rural }}</td>
+        <td>{{ county.voters_urban }}</td>
+        <td>{{ county.presence_str }}</td>
+
+      </tr>
+      {% endfor %}
+    </table>
+    </div>
   </div>
 
 </div>

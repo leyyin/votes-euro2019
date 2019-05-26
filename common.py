@@ -127,7 +127,6 @@ class Print:
 
 class VotesData:
     def __init__(self):
-        self.is_difference = False
         self.counties = dict()
         self.max_voters = 0
         self.total_voters = 0
@@ -135,7 +134,8 @@ class VotesData:
         self.total_voters_urban = 0
         self.presence = 0.0
 
-        self.total_expats = 0
+        self.is_difference = False
+        self.counties_difference = []
 
     def str_max_voters(self):
         return "{:,}".format(self.max_voters)
@@ -174,6 +174,30 @@ class VotesData:
         difference.total_voters_urban = self.total_voters_urban - other.total_voters_urban
         difference.presence = self.presence - other.presence
 
+        # Difference in counties
+        for county_code in self.counties:
+            if county_code not in other.counties:
+                continue
+
+            self_county = self.counties[county_code]
+            other_county =  other.counties[county_code]
+
+            self_county_total = self_county['voters_rural'] + self_county["voters_urban"]
+            other_county_total = other_county['voters_rural'] + other_county["voters_urban"]
+
+            difference.counties_difference.append({
+                "code": county_code,
+                "name": self_county["name"],
+                "presence": self_county['presence'] - other_county['presence'],
+                "presence_str": "{0:.2f}%".format(self_county['presence'] - other_county['presence']),
+                "max_voters": self_county["max_voters"],
+                "voters_rural": "{:,}".format(self_county['voters_rural'] - other_county['voters_rural']),
+                "voters_urban": "{:,}".format(self_county["voters_urban"] - other_county["voters_urban"]),
+                "voters_total": "{:,}".format(self_county_total - other_county_total)
+            })
+
+        # Sort
+        difference.counties_difference.sort(key=lambda county: county["presence"], reverse=True)
         return difference
 
 class BECTimeoutException(Exception):
@@ -233,9 +257,9 @@ def process_json_data(raw_dict_data):
 
 
     # calculate total expats
-    for precinct in raw_dict_data["precinct"]:
-        if precinct["county_code"] != "SR":
-            continue
+    # for precinct in raw_dict_data["precinct"]:
+    #     if precinct["county_code"] != "SR":
+    #         continue
 
     # NOTE because we also include the expats we must use the total population number
     data.max_voters = MAX_VOTES
