@@ -15,6 +15,8 @@ PAGE_REFERENDUM = "https://prezenta.bec.ro/referendum26052019"
 # 18.267.997
 MAX_VOTES = 18267997
 
+MAX_VOTES_OUTSIDE = 18968840
+
 class TerminalColors:
     HEADER = '\033[95m'
 
@@ -202,6 +204,10 @@ def process_json_data(raw_dict_data):
     data = VotesData()
     for county in raw_dict_data["county"]:
 
+        # Remove expats
+        # if county["county_code"] == "SR":
+        #     continue
+
         # Map from county code to data
         data.counties[county["county_code"]] = {
             "name": county["county_name"],
@@ -212,11 +218,12 @@ def process_json_data(raw_dict_data):
         }
 
         # Calculate totals
-        data.max_voters += county["initial_count"]
+        # data.max_voters += county["initial_count"]
         data.total_voters_rural += county["medium_r"]
         data.total_voters_urban += county["medium_u"]
         data.total_voters = data.total_voters_rural + data.total_voters_urban
 
+        # print(county["county_name"])
         # total_alternative = county["LT"]
         # total_urban_rural =  county["medium_r"] + county["medium_u"]
         # print(total_alternative, total_urban_rural, total_alternative == total_urban_rural)
@@ -227,7 +234,8 @@ def process_json_data(raw_dict_data):
         if precinct["county_code"] != "SR":
             continue
 
-
+    # NOTE because we also include the expats we must use the total population number
+    data.max_voters = MAX_VOTES_OUTSIDE
     data.presence = data.total_voters / data.max_voters  * 100
     difference = MAX_VOTES - data.max_voters
     # if difference != 0:

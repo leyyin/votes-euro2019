@@ -39,13 +39,13 @@
     <h1>Votes</h1>
 
     <div class="alert alert-info" role="alert">
-      Max people allowed to vote: {{ euro_data.str_max_voters() }}
-    </div>
-    <div class="alert alert-info" role="alert">
-      Note the data here is more up to date than what is shown on the BEC website ;)
+      Max people allowed to vote: {{ euro_data.str_max_voters() }} (includes expats)
     </div>
     <div class="alert alert-info" role="alert">
       Page refreshes every {{refresh_seconds}} seconds!
+    </div>
+    <div class="alert alert-warning" role="alert">
+      The page here also includes the votes from outside of the country (aka expats).
     </div>
   </div>
 
