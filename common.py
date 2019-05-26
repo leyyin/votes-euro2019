@@ -133,6 +133,8 @@ class VotesData:
         self.total_voters_urban = 0
         self.presence = 0.0
 
+        self.total_expats = 0
+
     def str_max_voters(self):
         return "{:,}".format(self.max_voters)
 
@@ -177,7 +179,7 @@ class BECTimeoutException(Exception):
 
 def download_page(url):
     try:
-        response = urllib.request.urlopen(url, timeout=30)
+        response = urllib.request.urlopen(url, timeout=20)
         data = response.read()
     except timeout:
         raise BECTimeoutException("BEC site is down, most likely.")
@@ -190,7 +192,7 @@ def get_download_timestamp():
 
 
 def download_json_data(url):
-    data = download_page("{}/data/presence/json/presence_AB_now.json?_={}".format(url, get_download_timestamp()))
+    data = download_page("{}/data/presence/json/presence_SR_now.json?_={}".format(url, get_download_timestamp()))
     return json.loads(data)
 
 
@@ -214,6 +216,17 @@ def process_json_data(raw_dict_data):
         data.total_voters_rural += county["medium_r"]
         data.total_voters_urban += county["medium_u"]
         data.total_voters = data.total_voters_rural + data.total_voters_urban
+
+        # total_alternative = county["LT"]
+        # total_urban_rural =  county["medium_r"] + county["medium_u"]
+        # print(total_alternative, total_urban_rural, total_alternative == total_urban_rural)
+
+
+    # calculate total expats
+    for precinct in raw_dict_data["precinct"]:
+        if precinct["county_code"] != "SR":
+            continue
+
 
     data.presence = data.total_voters / data.max_voters  * 100
     difference = MAX_VOTES - data.max_voters
