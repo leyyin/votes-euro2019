@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="refresh" content="30">
     <title>Votes</title>
 
     <style>
@@ -17,20 +18,22 @@
   </head>
   <body>
     <h1>Votes</h1>
+    <p>Max allowed to vote: {{ euro_data.str_max_voters() }}</p>
+    <p>Note the data here is more up to date than what is shown on the BEC website ;)</p>
     <hr>
-    <h2><a href="{{url_euro}}" target="_blank">Europarlamentare (EURO)</a></h2>
+    <h2><a href="{{url_euro}}" target="_blank">Europarlamentare</a></h2>
     {% with data=euro_data %}
     {% include "voters_data.html" %}
     {% endwith %}
 
     <hr>
-    <h2><a href="{{url_referendum}}" target="_blank">Referendum (REFEERENDUM)</a></h2>
+    <h2><a href="{{url_referendum}}" target="_blank">Referendum</a></h2>
     {% with data=referendum_data %}
     {% include "voters_data.html" %}
     {% endwith %}
 
     <hr>
-    <h2>Difference (EURO - REFFERENDUM)</h2>
+    <h2>Difference (Europarlamentare - Referendum)</h2>
     {% with data=difference_data %}
     {% include "voters_data.html" %}
     {% endwith %}

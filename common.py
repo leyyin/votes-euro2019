@@ -133,6 +133,9 @@ class VotesData:
         self.total_voters_urban = 0
         self.presence = 0.0
 
+    def str_max_voters(self):
+        return "{:,}".format(self.max_voters)
+
     def str_total_voters(self):
         return "{:,}".format(self.total_voters)
 
