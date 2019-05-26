@@ -208,8 +208,8 @@ def process_json_data(raw_dict_data):
     for county in raw_dict_data["county"]:
 
         # Remove expats
-        # if county["county_code"] == "SR":
-        #     continue
+        if county["county_code"] == "SR":
+            continue
 
         # Map from county code to data
         data.counties[county["county_code"]] = {
@@ -238,7 +238,7 @@ def process_json_data(raw_dict_data):
             continue
 
     # NOTE because we also include the expats we must use the total population number
-    data.max_voters = MAX_VOTES_OUTSIDE
+    data.max_voters = MAX_VOTES
     data.presence = data.total_voters / data.max_voters  * 100
     difference = MAX_VOTES - data.max_voters
     # if difference != 0:
