@@ -15,9 +15,12 @@ app = create_app()
 @app.route("/")
 def home():
     # cli.main()
-    euro_data = process_json_data(download_json_data(PAGE_EURO))
-    referendum_data = process_json_data(download_json_data(PAGE_REFERENDUM))
-    difference_data = euro_data - referendum_data
+    try:
+        euro_data = process_json_data(download_json_data(PAGE_EURO))
+        referendum_data = process_json_data(download_json_data(PAGE_REFERENDUM))
+        difference_data = euro_data - referendum_data
+    except BECTimeoutException:
+        return "The BEC website is down or under heavy load, ups!"
 
     return render_template("index.html", refresh_seconds=60,\
         euro_data=euro_data, \

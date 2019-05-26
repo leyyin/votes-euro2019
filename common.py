@@ -6,7 +6,7 @@ import urllib.request
 import random
 import pprint
 import sys
-
+from socket import timeout
 
 PAGE_EURO = "https://prezenta.bec.ro/europarlamentare26052019"
 PAGE_REFERENDUM = "https://prezenta.bec.ro/referendum26052019"
@@ -172,9 +172,16 @@ class VotesData:
 
         return difference
 
+class BECTimeoutException(Exception):
+    pass
+
 def download_page(url):
-    response = urllib.request.urlopen(url)
-    data = response.read()
+    try:
+        response = urllib.request.urlopen(url, timeout=30)
+        data = response.read()
+    except timeout:
+        raise BECTimeoutException("BEC site is down, most likely.")
+
     return data.decode('utf-8');
 
 
