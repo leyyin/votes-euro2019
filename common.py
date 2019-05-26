@@ -183,6 +183,9 @@ def download_page(url):
     try:
         response = urllib.request.urlopen(url, timeout=20)
         data = response.read()
+
+    except urllib.error.URLError:
+        raise BECTimeoutException("BEC site is down, most likely.")
     except timeout:
         raise BECTimeoutException("BEC site is down, most likely.")
 
