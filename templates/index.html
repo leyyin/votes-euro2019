@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Votes</title>
+
+    <style>
+      .padding-left-4 {
+        padding-left: 4em;
+      }
+
+      .text-bold {
+         font-weight: bold;
+      }
+
+    </style>
+  </head>
+  <body>
+    <h1>Votes</h1>
+    <hr>
+    <h2><a href="{{url_euro}}" target="_blank">Europarlamentare (EURO)</a></h2>
+    {% with data=euro_data %}
+    {% include "voters_data.html" %}
+    {% endwith %}
+
+    <hr>
+    <h2><a href="{{url_referendum}}" target="_blank">Referendum (REFEERENDUM)</a></h2>
+    {% with data=referendum_data %}
+    {% include "voters_data.html" %}
+    {% endwith %}
+
+    <hr>
+    <h2>Difference (EURO - REFFERENDUM)</h2>
+    {% with data=difference_data %}
+    {% include "voters_data.html" %}
+    {% endwith %}
+
+  </body>
+</html>
