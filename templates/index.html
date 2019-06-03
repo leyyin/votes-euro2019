@@ -38,6 +38,13 @@
   <div class="row">
     <h1>Votes</h1>
 
+    <div class="alert alert-danger" role="alert">
+     Live result updates:<br>
+     <a href="https://temporaryeuroresults.azurewebsites.net/api/euro?code=0ubeBbfmos0UYZcbWmvzajhu5QSdM8Wx/O311I/E0VFgmQa9hZ1zlw==&type=finale" target="_blank">Here</a>
+     OR
+     <a href="https://europe-west2-durable-matter-241821.cloudfunctions.net/get_votes-1" target="_blank">Here</a>
+    </div>
+
     <div class="alert alert-info" role="alert">
       Max people allowed to vote: {{ euro_data.str_max_voters() }} (includes expats)
     </div>
@@ -78,7 +85,7 @@
 
     <div class="col-md-12">
     <h4>Voting difference by county (sorted by difference presence descending):</h4>
-    <table class="table table-bordered table-hover">
+    <table id="table-county-diff" class="table table-bordered table-hover">
       <tr>
         <th>County Code</th>
         <th>County Name</th>
@@ -98,12 +105,17 @@
         <td>{{ county.voters_rural }}</td>
         <td>{{ county.voters_urban }}</td>
         <td>{{ county.presence_str }}</td>
-
       </tr>
       {% endfor %}
     </table>
     </div>
   </div>
-
 </div>
+
 {%- endblock %}
+
+
+{% block scripts %}
+  {{super()}}
+
+{% endblock %}
